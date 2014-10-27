@@ -6,40 +6,22 @@ function Ith = thinning(I)
 %   should be represented by 0.
 
 ELIMINATION_MASK = cell(8, 1);
-ELIMINATION_MASK{3} = [303; 423; 207; 111; 489; 459; 486; 492];
-ELIMINATION_MASK{4} = [47; 295; 203; 79; 488; 457; 422; 484; 331; 271; 460; 205];
-ELIMINATION_MASK{5} = [39; 294; 75; 15; 456; 201; 420; 480; 267; 204];
-ELIMINATION_MASK{6} = [38; 292; 11; 7; 200; 73; 416; 448];
-ELIMINATION_MASK{7} = [36; 288; 3; 6; 72; 9; 384; 192];
-ELIMINATION_MASK{8} = [32; 2; 8; 128];
+ELIMINATION_MASK{3} = [303 423 207 111 489 459 486 492];
+ELIMINATION_MASK{4} = [47 295 203 79 488 457 422 484 331 271 460 205];
+ELIMINATION_MASK{5} = [39 294 75 15 456 201 420 480 267 204];
+ELIMINATION_MASK{6} = [38 292 11 7 200 73 416 448];
+ELIMINATION_MASK{7} = [36 288 3 6 72 9 384 192];
+ELIMINATION_MASK{8} = [32 2 8 128];
 
 PRESEVERED_MASK = cell(7, 1);
-PRESEVERED_MASK{1} = [2, 1, 2; 
-                      0, 0, 0; 
-                      0, 0, 0; 
-                      2, 1, 2];
-PRESEVERED_MASK{2} = [2, 1, 1; 
-                      0, 0, 1; 
-                      1, 0, 1; 
-                      1, 1, 2];
-PRESEVERED_MASK{3} = [2, 1, 1; 
-                      0, 0, 1; 
-                      1, 0, 1; 
-                      1, 1, 2];
-PRESEVERED_MASK{4} = [2, 1, 1, 1;
-                      1, 0, 0, 1;
-                      1, 1, 0, 2];
-PRESEVERED_MASK{5} = [2, 0, 0, 2;
-                      1, 0, 0, 1;
-                      2, 0, 0, 2];
-PRESEVERED_MASK{6} = [1, 1, 1, 2;
-                      1, 0, 0, 1;
-                      2, 0, 1, 1];
-PRESEVERED_MASK{7} = [1, 1, 1, 1;
-                      1, 0, 0, 1;
-                      1, 0, 0, 1;
-                      1, 1, 1, 1];
-PRESEVERED_MASK_CENTROID = [2, 2; 3, 2; 2, 2; 2, 2; 2, 2; 2, 3; 2, 2];
+PRESEVERED_MASK{1} = [2 1 2; 0 0 0; 0 0 0; 2 1 2];
+PRESEVERED_MASK{2} = [2 1 1; 0 0 1; 1 0 1; 1 1 2];
+PRESEVERED_MASK{3} = [2 1 1; 0 0 1; 1 0 1; 1 1 2];
+PRESEVERED_MASK{4} = [2 1 1 1; 1 0 0 1; 1 1 0 2];
+PRESEVERED_MASK{5} = [2 0 0 2; 1 0 0 1; 2 0 0 2];
+PRESEVERED_MASK{6} = [1 1 1 2; 1 0 0 1; 2 0 1 1];
+PRESEVERED_MASK{7} = [1 1 1 1; 1 0 0 1; 1 0 0 1; 1 1 1 1];
+PRESEVERED_MASK_CENTROID = [2 2; 3 2; 2 2; 2 2; 2 2; 2 3; 2 2];
 
 % Remove pixels on border.
 [height, width] = size(I);
@@ -84,6 +66,9 @@ while 1 == 1
                                             preservable = 0;
                                             break
                                         end
+                                    end
+                                    if preservable == 0
+                                        break
                                     end
                                 end
                                 if preservable == 1

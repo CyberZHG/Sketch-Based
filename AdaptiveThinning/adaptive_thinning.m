@@ -1,7 +1,7 @@
-function Ith_best = adapative_thinning(I)
-% ADAPATIVE_THINNING Produce thinned version of the input sketch image.
+function Ith_best = adaptive_thinning(I)
+% ADAPTIVE_THINNING Produce thinned version of the input sketch image.
 %
-%   ITH_BEST = ADAPATIVE_THINNING(I) produce a one-pixel-wide skeleton
+%   ITH_BEST = ADAPTIVE_THINNING(I) produce a one-pixel-wide skeleton
 %   visually similar to the original image, and preserve connectivity
 %   between foreground pixels. The input sketch should be a binarized or
 %   gray-scale image with only one channel, and the skeleton should be
@@ -12,12 +12,10 @@ SIGMA_INC = 2;
 SIGMA_MAX = 17;
 POSITION = [0, 0; -1, -1; -1, 0; -1, 1; 0, 1; 1, 1; 1, 0; 1, -1; 0, -1; 0, 0];
 
-i = 0;
 [height, width] = size(I);
 S_min = height * width + 1;
 % figure;
 for sigma = SIGMA_MIN : SIGMA_INC : SIGMA_MAX
-    i = i + 1;
     % Gaussian filter.
     filter = fspecial('gaussian', sigma, sigma);
     IG = imfilter(I, filter, 'same');

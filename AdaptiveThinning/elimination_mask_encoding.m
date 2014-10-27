@@ -4,9 +4,5 @@ function code = elimination_mask_encoding(mask)
 %   CODE = ELIMINATION_MASK_ENCODING(MASK) Trasfer the input 3 * 3 logical
 %   mask to a single number for elimination of thinning.
 
-code = 0;
-for i = 1 : 3
-    for j = 1 : 3
-        code = bitshift(code, 1) + mask(i, j);
-    end
-end
+weight = [1 2 4; 8 16 32; 64 128 256];
+code = sum(sum(mask .* weight));
