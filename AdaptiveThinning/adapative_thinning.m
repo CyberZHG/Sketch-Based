@@ -5,7 +5,7 @@ function Ith_best = adapative_thinning(I)
 %   visually similar to the original image, and preserve connectivity
 %   between foreground pixels. The input sketch should be a binarized or
 %   gray-scale image with only one channel, and the skeleton should be
-%   represented by white pixels.
+%   represented by black pixels.
 
 SIGMA_MIN = 3;
 SIGMA_INC = 2;
@@ -22,14 +22,10 @@ for sigma = SIGMA_MIN : SIGMA_INC : SIGMA_MAX
     filter = fspecial('gaussian', sigma, sigma);
     IG = imfilter(I, filter, 'same');
     % Adaptive binarization.
-    th = 1.0 * sum(sum(IG .* uint8(IG ~= 255))) / sum(sum(IG ~= 255));
+    th = 1.0 * sum(sum(uint8(IG) .* uint8(IG ~= 255))) / sum(sum(IG ~= 255));
     IB = 1 - (IG < th);
-    subplot(4, 4, (i - 1) * 2 + 1);
-    imshow(IG);
     % Thinning algorithm.
-    Ith = imresize(imresize(IB, 0.5), 2) > 0;
-    subplot(4, 4, (i - 1) * 2 + 2);
-    imshow(Ith);
+    Ith = thinning(IB);
     % Sensitivity measure.
     S = 0;
     for y = 2 : height - 1

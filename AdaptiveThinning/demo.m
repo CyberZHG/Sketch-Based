@@ -1,8 +1,8 @@
-I = imread('47.png');
+I = imread('test.jpg');
 I = rgb2gray(I);
-Ith_best = adapative_thinning(I);
+Ith_best = adapative_thinning(I > 230);
 
-subplot(1, 2, 1); 
+figure;
 imshow(I); 
-subplot(1, 2, 2); 
+figure;
 imshow(Ith_best);
