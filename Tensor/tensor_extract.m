@@ -13,7 +13,7 @@ function desc = tensor_extract(I, cell_num)
 
 if nargin == 1
     % Extract single tensor descriptor.
-    if size(I, 3) > 1
+    if size(I, 3) > 2
         I = rgb2gray(I);
     end
     I = im2double(I);
@@ -22,7 +22,7 @@ if nargin == 1
     dxdy = sum(sum(dx .* dy));
     dydy = sum(sum(dy .* dy));
     desc = [dxdx, dxdy; dxdy, dydy];
-    desc = desc / norm(desc, 'fro');
+    desc = desc / (norm(desc, 'fro') + rand(1, 1) / 1e5);
 else
     if length(cell_num) == 1
         cell_row_num = cell_num;
@@ -33,15 +33,17 @@ else
     else
         error('The format of CELL_NUM is not correct.');
     end
-    [height, width] = size(I);
+    height = size(I, 1);
+    width = size(I, 2);
     cell_height = floor(height / cell_row_num);
     cell_width = floor(width / cell_col_num);
     desc = zeros(cell_row_num * cell_col_num * 4, 1);
     index = 1;
     for r = 0 : cell_row_num - 1
         for c = 0 : cell_col_num - 1
-            patch = I(r * cell_height + 1 : (r + 1) * cell_height, ...
-                      c * cell_width + 1 : (c + 1) * cell_width);
+            index_r = r * cell_height + 1 : (r + 1) * cell_height;
+            index_c = c * cell_width + 1 : (c + 1) * cell_width;
+            patch = I(index_r, index_c);
             desc(index : index + 3) = reshape(tensor_extract(patch), 4, 1);
             index = index + 4;
         end
