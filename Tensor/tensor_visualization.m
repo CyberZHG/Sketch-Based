@@ -42,9 +42,6 @@ else
             index_c = c * cell_width + 1 : (c + 1) * cell_width;
             patch = I(index_r, index_c, :);
             vis(index_r, index_c, :) = tensor_visualization(patch);
-            subplot(1, 1, 1);
-            imshow(vis);
-            drawnow;
         end
     end
 end

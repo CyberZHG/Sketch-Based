@@ -1,4 +1,4 @@
-function ret = draw_line(I, y1, x1, y2, x2, color)
+function ret = draw_line(I, y1, x1, y2, x2)
 
 ret = I;
 if x1 == x2
