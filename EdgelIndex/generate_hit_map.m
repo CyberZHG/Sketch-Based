@@ -9,10 +9,10 @@ function map = generate_hit_map(sketch)
     NEIGHBOR = [-1, 0; 1, 0; 0, -1; 0, 1];
     % Initialize angle bin.
     sketch = imresize(sketch, [200 200]);
-    sketch = sketch > (max(max(sketch)) * 0.5);
-    [dx, dy] = gradient(double(sketch));
-    theta = atan2(dy, dx) / pi * 360;
-    theta = theta + (theta < -15) * 180;
+    filter = fspecial('gaussian', [4, 4], 0.95);
+    [dx, dy] = gradient(double(imfilter(sketch, filter, 'same')));
+    sketch = sketch > (max(max(sketch)) * 0.7 + min(min(sketch)) * 0.3);
+    theta = mod(floor(atan2(dy, dx) / pi * 180 + 15) + 360, 180) - 15;
     theta = floor((theta + 15) / 30) + 1;
     % Breadth first search.
     map = zeros(200, 200, 6);
@@ -21,9 +21,11 @@ function map = generate_hit_map(sketch)
     rear = 1;
     for i = 1 : 200
         for j = 1 : 200
-            map(i, j, theta(i, j)) = 1;
-            queue(rear, :) = [i, j, theta(i, j)];
-            rear = rear + 1;
+            if sketch(i, j) == 0
+                map(i, j, theta(i, j)) = 1;
+                queue(rear, :) = [i, j, theta(i, j)];
+                rear = rear + 1;
+            end
         end
     end
     while front < rear
