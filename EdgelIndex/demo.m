@@ -1,12 +1,4 @@
-image_id = [ ...
-    44191200 139604578 143579406 155564788 195257726 ...
-    209269763 234006161 380198147 445613275 485503008 ...
-    494156596 554401680 772154832 1039278079 1214060759 ...
-    1383767497 1389885647 1503294079 1724051900 1756449956 ...
-    1767271806 1899122894 2020608196 2047216407 2146252030 ...
-    2176777953 2275608188 2303230843 2433025324 2472568621 ...
-    2545782568 2560747620 2667419984 2846791107 3175059343 ...
-    3229922581 3242066615 3282834221 3313309154 3353718984];
+image_id = 1 : 40;
 image_path = {};
 for i = 1 : length(image_id)
     image_path{end + 1} = [num2str(image_id(i)) '.jpg'];
@@ -17,5 +9,15 @@ for i = 1 : length(image_id)
 %     I = edge(I, 'canny');
 %     imwrite(1 - I, image_path{end});
 end
-index = generate_index(image_id, image_path);
-save('index.mat', 'index');
+%edgel_index = generate_index(image_id, image_path);
+%save('index.mat', 'edgel_index');
+%load('index.mat', 'edgel_index');
+query_image = imread('query.png');
+result = edgel_query(query_image, edgel_index, image_path);
+for i = 1 : 5
+    for j = 1 : 5
+        subplot(5, 5, (i - 1) * 5 + j);
+        I = imread([num2str(result((i - 1) * 5 + j)), '.jpg']);
+        imshow(I);
+    end
+end

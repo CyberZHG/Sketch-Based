@@ -8,6 +8,9 @@ function map = generate_hit_map(sketch)
     TOLERANCE_RADIUS = 4;
     NEIGHBOR = [-1, 0; 1, 0; 0, -1; 0, 1];
     % Initialize angle bin.
+    if size(sketch, 3) > 1
+        sketch = rgb2gray(sketch);
+    end
     sketch = imresize(sketch, [200 200]);
     filter = fspecial('gaussian', [4, 4], 0.95);
     [dx, dy] = gradient(double(imfilter(sketch, filter, 'same')));
