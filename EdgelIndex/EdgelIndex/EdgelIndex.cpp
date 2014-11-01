@@ -233,6 +233,7 @@ vector<Score> query(map<int, ImageInfo> &images,
                     const vector<vector<vector<vector<int>>>> &edgelIndex, 
                     const vector<vector<bool>> &querySketch)
 {
+    cout << "Querying" << endl;
     map<int, double> scores;
     auto hitmap = generateHitMap(querySketch);
     for (int x = 0; x < 200; ++x)
@@ -262,6 +263,7 @@ vector<Score> query(map<int, ImageInfo> &images,
     {
         result.pop_back();
     }
+    cout << "Reranking" << endl;
     auto angle = calcAngle(querySketch);
     int queryPixelNum = countSketchPixel(querySketch);
     for (int i = (int)result.size() - 1; i >= 0; --i)
@@ -295,7 +297,7 @@ int main(int argc, char* argv[])
 {
     auto images = getImagesInfo();
     auto edgelIndex = generateEdgelIndex(images);
-    auto querySketch = loadSketch("query.jpg");
+    auto querySketch = loadSketch("0.jpg");
     auto result = query(images, edgelIndex, querySketch);
     fstream fout;
     fout.open("result", ios::out);
