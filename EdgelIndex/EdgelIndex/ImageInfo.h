@@ -6,7 +6,6 @@ using namespace std;
 struct DatasetImageInfo
 {
     string sketchPath;
-    string originPath;
 };
 
 struct QueryImageInfo
@@ -17,7 +16,7 @@ struct QueryImageInfo
 
 struct Score
 {
-    int id;
+    string id;
     double score;
     bool operator <(const Score &s) const
     {

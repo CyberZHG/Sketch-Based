@@ -7,19 +7,20 @@ Task::Task(const char* taskFilePath)
     fin.open(taskFilePath, ios::in);
     int datasetImageNum = 0;
     fin >> datasetImageNum;
-    int id;
-    string sketchPath, assistPath;
+    string id;
+    string sketchPath;
     for (int i = 0; i < datasetImageNum; ++i)
     {
-        fin >> id >> sketchPath >> assistPath;
-        _datasetImages[id] = { sketchPath, assistPath };
+        fin >> id >> sketchPath;
+        _datasetImages[id] = { sketchPath };
     }
     int queryImageNum = 0;
     fin >> queryImageNum;
+    string savePath;
     for (int i = 0; i < queryImageNum; ++i)
     {
-        fin >> sketchPath >> assistPath;
-        _queryImages.push_back({ sketchPath, assistPath });
+        fin >> sketchPath >> savePath;
+        _queryImages.push_back({ sketchPath, savePath });
     }
     fin.close();
 }

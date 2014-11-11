@@ -5,17 +5,17 @@
 const double PI = acos(-1.0);
 const double DEG_TRANS = 180.0 / PI;
 
-const int STEP_X[] = { 0, 1, 0, -1 };
-const int STEP_Y[] = { 1, 0, -1, 0 };
+const int STEP_X[] = { 0, 1, 0, -1, 1, 1, -1, -1 };
+const int STEP_Y[] = { 1, 0, -1, 0, 1, -1, 1, -1 };
 const int CIRCLE_X[] = { 0, 0, 0, 1, 1, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 7, 7, 8, 8, 8 };
 const int CIRCLE_Y[] = { 3, 4, 5, 1, 2, 6, 7, 1, 7, 0, 8, 0, 8, 0, 8, 1, 7, 1, 2, 6, 7, 3, 4, 5 };
 const int TOLERANCE_RADIUS = 4;
 const int RERANK_NUM = 1000;
 
 EdgelIndex::EdgelIndex() :
-    _edgelIndex(200, vector<vector<vector<int>>>(
-                200, vector<vector<int>>(
-                6, vector<int>())))
+    _edgelIndex(200, vector<vector<vector<string>>>(
+                200, vector<vector<string>>(
+                6, vector<string>())))
 {
 }
 
@@ -27,7 +27,7 @@ EdgelIndex::~EdgelIndex()
 void EdgelIndex::localDfs(const Sketch &sketch, vector<vector<bool>> &local, const int x, const int y, const int lx, const int ly)
 {
     local[lx][ly] = true;
-    for (int k = 0; k < 4; ++k)
+    for (int k = 0; k < 8; ++k)
     {
         int tx = x + STEP_X[k];
         int ty = y + STEP_Y[k];
@@ -141,7 +141,7 @@ vector<vector<vector<bool>>> EdgelIndex::generateHitMap(const Sketch &sketch)
     return hitmap;
 }
 
-void EdgelIndex::generateEdgelIndex(map<int, DatasetImageInfo> &datasetImages)
+void EdgelIndex::generateEdgelIndex(map<string, DatasetImageInfo> &datasetImages)
 {
     cout << "Generate Edgel Index: " << endl;
     for (auto image : datasetImages)
@@ -155,17 +155,20 @@ void EdgelIndex::generateEdgelIndex(map<int, DatasetImageInfo> &datasetImages)
             {
                 for (int theta = 0; theta < 6; ++theta)
                 {
-                    _edgelIndex[x][y][theta].push_back(image.first);
+                    if (hitmap[x][y][theta])
+                    {
+                        _edgelIndex[x][y][theta].push_back(image.first);
+                    }
                 }
             }
         }
     }
 }
 
-vector<Score> EdgelIndex::query(map<int, DatasetImageInfo> &images, const Sketch &querySketch)
+vector<Score> EdgelIndex::query(map<string, DatasetImageInfo> &images, const Sketch &querySketch)
 {
     cout << "Querying" << endl;
-    map<int, double> scores;
+    map<string, double> scores;
     auto hitmap = generateHitMap(querySketch);
     for (int x = 0; x < 200; ++x)
     {
@@ -221,5 +224,22 @@ vector<Score> EdgelIndex::query(map<int, DatasetImageInfo> &images, const Sketch
         result[i].score = (result[i].score / queryPixelNum) * (score / sketch.countSketchPixel());
     }
     sort(result.begin(), result.end());
+    // Add missed images. Not necessary.
+    for (auto image : images)
+    {
+        bool find = false;
+        for (auto r : result)
+        {
+            if (r.id == image.first)
+            {
+                find = true;
+                break;
+            }
+        }
+        if (!find)
+        {
+            result.push_back({ image.first, 0.0 });
+        }
+    }
     return result;
 }

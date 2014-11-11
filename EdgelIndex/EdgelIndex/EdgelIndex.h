@@ -11,15 +11,14 @@ public:
     EdgelIndex();
     virtual ~EdgelIndex();
 
-    void generateEdgelIndex(map<int, DatasetImageInfo> &datasetImages);
-    vector<Score> EdgelIndex::query(map<int, DatasetImageInfo> &images, const Sketch &querySketch);
-
-
-private:
-    vector<vector<vector<vector<int>>>> _edgelIndex;
-
-    void localDfs(const Sketch &sketch, vector<vector<bool>> &local, const int x, const int y, const int lx, const int ly);
+    void generateEdgelIndex(map<string, DatasetImageInfo> &datasetImages);
+    vector<Score> EdgelIndex::query(map<string, DatasetImageInfo> &images, const Sketch &querySketch);
     vector<vector<vector<bool>>> calcAngle(const Sketch &sketch);
     vector<vector<vector<bool>>> generateHitMap(const Sketch &sketch);
+
+private:
+    vector<vector<vector<vector<string>>>> _edgelIndex;
+
+    void localDfs(const Sketch &sketch, vector<vector<bool>> &local, const int x, const int y, const int lx, const int ly);
 };
 

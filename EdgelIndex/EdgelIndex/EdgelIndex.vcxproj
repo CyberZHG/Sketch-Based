@@ -88,6 +88,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Sketch.cpp" />
     <ClCompile Include="Task.cpp" />
+    <ClCompile Include="Test.cpp" />
     <ClCompile Include="Worker.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -95,6 +96,7 @@
     <ClInclude Include="ImageInfo.h" />
     <ClInclude Include="Sketch.h" />
     <ClInclude Include="Task.h" />
+    <ClInclude Include="Test.h" />
     <ClInclude Include="Worker.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
