@@ -26,7 +26,7 @@ void Worker::work(Task& task)
         fout.open(outputPath.c_str(), ios::out);
         for (auto score : scores)
         {
-            fout << score.id << ' ' << score.score << endl;
+            fout << task.datasetImages()[score.id].id << ' ' << score.score << endl;
         }
         fout.close();
     }

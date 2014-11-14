@@ -1,4 +1,6 @@
 #include <queue>
+#include <cstdio>
+#include <string>
 #include <iostream>
 #include "EdgelIndex.h"
 
@@ -13,9 +15,9 @@ const int TOLERANCE_RADIUS = 4;
 const int RERANK_NUM = 1000;
 
 EdgelIndex::EdgelIndex() :
-    _edgelIndex(200, vector<vector<vector<string>>>(
-                200, vector<vector<string>>(
-                6, vector<string>())))
+    _edgelIndex(200, vector<vector<vector<int>>>(
+                200, vector<vector<int>>(
+                6, vector<int>())))
 {
 }
 
@@ -141,7 +143,7 @@ vector<vector<vector<bool>>> EdgelIndex::generateHitMap(const Sketch &sketch)
     return hitmap;
 }
 
-void EdgelIndex::generateEdgelIndex(map<string, DatasetImageInfo> &datasetImages)
+void EdgelIndex::generateEdgelIndex(map<int, DatasetImageInfo> &datasetImages)
 {
     cout << "Generate Edgel Index: " << endl;
     for (auto image : datasetImages)
@@ -165,10 +167,10 @@ void EdgelIndex::generateEdgelIndex(map<string, DatasetImageInfo> &datasetImages
     }
 }
 
-vector<Score> EdgelIndex::query(map<string, DatasetImageInfo> &images, const Sketch &querySketch)
+vector<Score> EdgelIndex::query(map<int, DatasetImageInfo> &images, const Sketch &querySketch)
 {
     cout << "Querying" << endl;
-    map<string, double> scores;
+    map<int, double> scores;
     auto hitmap = generateHitMap(querySketch);
     for (int x = 0; x < 200; ++x)
     {
@@ -242,4 +244,38 @@ vector<Score> EdgelIndex::query(map<string, DatasetImageInfo> &images, const Ske
         }
     }
     return result;
+}
+
+void EdgelIndex::saveHitMap(const vector<vector<vector<bool>>>& hitmap, const char* fileName)
+{
+    FILE *file = fopen(fileName, "wb");
+    for (auto i : hitmap)
+    {
+        for (auto j : i)
+        {
+            for (auto k : j)
+            {
+                fputc(k ? '1' : '0', file);
+            }
+        }
+    }
+    fclose(file);
+}
+
+vector<vector<vector<bool>>> EdgelIndex::readHitmap(const char* fileName)
+{
+    vector<vector<vector<bool>>> hitmap(200, vector<vector<bool>>(200, vector<bool>(6, false)));
+    FILE *file = fopen(fileName, "rb");
+    for (int i = 0; i < 200; ++i)
+    {
+        for (int j = 0; j < 200; ++j)
+        {
+            for (int k = 0; k < 6; ++k)
+            {
+                hitmap[i][j][k] = fgetc(file);
+            }
+        }
+    }
+    fclose(file);
+    return hitmap;
 }

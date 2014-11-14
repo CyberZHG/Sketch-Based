@@ -14,15 +14,15 @@ public:
 
     void run();
 
-    map<string, DatasetImageInfo>& datasetImages();
+    map<int, DatasetImageInfo>& datasetImages();
     vector<QueryImageInfo>& queryImages();
 
 private:
-    map<string, DatasetImageInfo> _datasetImages;
+    map<int, DatasetImageInfo> _datasetImages;
     vector<QueryImageInfo> _queryImages;
 };
 
-inline map<string, DatasetImageInfo>& Task::datasetImages()
+inline map<int, DatasetImageInfo>& Task::datasetImages()
 {
     return _datasetImages;
 }
