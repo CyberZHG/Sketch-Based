@@ -143,13 +143,38 @@ vector<vector<vector<bool>>> EdgelIndex::generateHitMap(const Sketch &sketch)
     return hitmap;
 }
 
-void EdgelIndex::generateEdgelIndex(map<int, DatasetImageInfo> &datasetImages)
+void EdgelIndex::generateEdgelIndex(map<int, DatasetImageInfo> &datasetImages, int threadNum)
 {
     cout << "Generate Edgel Index: " << endl;
-    for (auto image : datasetImages)
+    _shift = 0;
+    _threadNum = threadNum;
+    _shiftMutex = CreateMutex(NULL, FALSE, NULL);
+    _datasetImages = &datasetImages;
+    for (int i = 1; i < threadNum; ++i)
     {
-        cout << image.first << ' ' << image.second.sketchPath << endl;
-        Sketch sketch(image.second.sketchPath.c_str());
+        CreateThread(0, 0, edgelThreadEntry, this, 0, 0);
+    }
+    edgelThread();
+}
+
+DWORD WINAPI EdgelIndex::edgelThreadEntry(LPVOID self)
+{
+    reinterpret_cast<EdgelIndex*>(self)->edgelThread();
+    return 0;
+}
+
+void EdgelIndex::edgelThread()
+{
+    int len = _datasetImages->size();
+    WaitForSingleObject(_shiftMutex, INFINITE);
+    int shift = _shift++;
+    ReleaseMutex(_shiftMutex);
+    vector<vector<vector<vector<int>>>> edgelIndex(200, vector<vector<vector<int>>>(200, vector<vector<int>>(6, vector<int>())));
+    for (int i = shift; i < len; i += _threadNum)
+    {
+        auto image = (*_datasetImages)[i];
+        cout << i << ' ' << image.sketchPath << endl;
+        Sketch sketch(image.sketchPath.c_str());
         auto hitmap = generateHitMap(sketch);
         for (int x = 0; x < 200; ++x)
         {
@@ -159,17 +184,31 @@ void EdgelIndex::generateEdgelIndex(map<int, DatasetImageInfo> &datasetImages)
                 {
                     if (hitmap[x][y][theta])
                     {
-                        _edgelIndex[x][y][theta].push_back(image.first);
+                        edgelIndex[x][y][theta].push_back(i);
                     }
                 }
             }
         }
     }
+    WaitForSingleObject(_shiftMutex, INFINITE);
+    for (int x = 0; x < 200; ++x)
+    {
+        for (int y = 0; y < 200; ++y)
+        {
+            for (int theta = 0; theta < 6; ++theta)
+            {
+                for (auto id : edgelIndex[x][y][theta])
+                {
+                    _edgelIndex[x][y][theta].push_back(id);
+                }
+            }
+        }
+    }
+    ReleaseMutex(_shiftMutex);
 }
 
 vector<Score> EdgelIndex::query(map<int, DatasetImageInfo> &images, const Sketch &querySketch)
 {
-    cout << "Querying" << endl;
     map<int, double> scores;
     auto hitmap = generateHitMap(querySketch);
     for (int x = 0; x < 200; ++x)
@@ -199,7 +238,6 @@ vector<Score> EdgelIndex::query(map<int, DatasetImageInfo> &images, const Sketch
     {
         result.pop_back();
     }
-    cout << "Reranking" << endl;
     auto angle = calcAngle(querySketch);
     int queryPixelNum = querySketch.countSketchPixel();
     for (int i = (int)result.size() - 1; i >= 0; --i)
@@ -272,7 +310,7 @@ vector<vector<vector<bool>>> EdgelIndex::readHitmap(const char* fileName)
         {
             for (int k = 0; k < 6; ++k)
             {
-                hitmap[i][j][k] = fgetc(file);
+                hitmap[i][j][k] = fgetc(file) != 0;
             }
         }
     }
