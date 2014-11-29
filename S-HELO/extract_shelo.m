@@ -34,20 +34,14 @@ function feature = extract_shelo(I, W, B, K)
         A = zeros([W, W]);
         D = zeros([W, W]);
         magnitude = zeros([W, W]);
-        for i = 1 : M
-            for j = 1 : N
+        for i = 2 : M - 1
+            for j = 2 : N - 1
                 p = j / N * W;
                 q = i / M * W;
                 l_pos = ceil(p - 0.5);
                 r_pos = ceil(p + 0.5);
                 n_pos = ceil(q - 0.5);
                 s_pos = ceil(q + 0.5);
-                if r_pos > W
-                    r_pos = W;
-                end
-                if s_pos > W
-                    s_pos = W;
-                end
                 dist_p = p - floor(p);
                 dist_q = q - floor(q);
                 if dist_p < 0.5
