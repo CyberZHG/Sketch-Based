@@ -3,16 +3,10 @@
 #include <string>
 using namespace std;
 
-struct DatasetImageInfo
+struct ImageInfo
 {
     string id;
-    string sketchPath;
-};
-
-struct QueryImageInfo
-{
-    string sketchPath;
-    string outputPath;
+    string path;
 };
 
 struct Score

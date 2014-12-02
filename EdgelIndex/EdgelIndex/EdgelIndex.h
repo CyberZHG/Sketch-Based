@@ -12,8 +12,8 @@ public:
     EdgelIndex();
     virtual ~EdgelIndex();
 
-    void generateEdgelIndex(map<int, DatasetImageInfo> &datasetImages, int threadNum = 1);
-    vector<Score> EdgelIndex::query(map<int, DatasetImageInfo> &images, const Sketch &querySketch);
+    void generateEdgelIndex(map<int, ImageInfo> &datasetImages, int threadNum = 1);
+    vector<Score> EdgelIndex::query(map<int, ImageInfo> &images, const Sketch &querySketch);
     vector<vector<vector<bool>>> calcAngle(const Sketch &sketch);
     vector<vector<vector<bool>>> generateHitMap(const Sketch &sketch);
     void saveHitMap(const vector<vector<vector<bool>>>& hitmap, const char* fileName);
@@ -27,7 +27,7 @@ private:
     int _threadNum;
     int _shift;
     HANDLE _shiftMutex;
-    map<int, DatasetImageInfo>* _datasetImages;
+    map<int, ImageInfo>* _datasetImages;
     static DWORD WINAPI edgelThreadEntry(LPVOID self);
     void edgelThread();
 };

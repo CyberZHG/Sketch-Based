@@ -25,6 +25,10 @@ void Worker::work(Task& task, int threadNum)
         CreateThread(0, 0, queryThreadEntry, this, 0, 0);
     }
     queryThread();
+    while (_shift)
+    {
+        Sleep(200);
+    }
     delete _edgelIndex;
 }
 
@@ -36,15 +40,15 @@ DWORD WINAPI Worker::queryThreadEntry(LPVOID self)
 
 void Worker::queryThread()
 {
-    int len = _task->queryImages().size();
+    int len = (int)_task->queryImages().size();
     WaitForSingleObject(_shiftMutex, INFINITE);
     int shift = _shift++;
     ReleaseMutex(_shiftMutex);
     for (int i = shift; i < len; i += _threadNum)
     {
         auto queryImage = _task->queryImages()[i];
-        const string& queryPath = queryImage.sketchPath;
-        const string& outputPath = queryImage.outputPath;
+        const string& queryPath = queryImage.path;
+        const string& outputPath = queryImage.id + ".result";
         cout << "Query: " << queryPath << endl;
         Sketch querySketch(queryPath.c_str());
         auto scores = _edgelIndex->query(_task->datasetImages(), querySketch);
@@ -56,4 +60,7 @@ void Worker::queryThread()
         }
         fout.close();
     }
+    WaitForSingleObject(_shiftMutex, INFINITE);
+    --_shift;
+    ReleaseMutex(_shiftMutex);
 }

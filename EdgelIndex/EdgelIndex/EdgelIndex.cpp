@@ -143,7 +143,7 @@ vector<vector<vector<bool>>> EdgelIndex::generateHitMap(const Sketch &sketch)
     return hitmap;
 }
 
-void EdgelIndex::generateEdgelIndex(map<int, DatasetImageInfo> &datasetImages, int threadNum)
+void EdgelIndex::generateEdgelIndex(map<int, ImageInfo> &datasetImages, int threadNum)
 {
     cout << "Generate Edgel Index: " << endl;
     _shift = 0;
@@ -155,6 +155,10 @@ void EdgelIndex::generateEdgelIndex(map<int, DatasetImageInfo> &datasetImages, i
         CreateThread(0, 0, edgelThreadEntry, this, 0, 0);
     }
     edgelThread();
+    while (_shift)
+    {
+        Sleep(200);
+    }
 }
 
 DWORD WINAPI EdgelIndex::edgelThreadEntry(LPVOID self)
@@ -165,7 +169,7 @@ DWORD WINAPI EdgelIndex::edgelThreadEntry(LPVOID self)
 
 void EdgelIndex::edgelThread()
 {
-    int len = _datasetImages->size();
+    int len = (int)_datasetImages->size();
     WaitForSingleObject(_shiftMutex, INFINITE);
     int shift = _shift++;
     ReleaseMutex(_shiftMutex);
@@ -173,8 +177,8 @@ void EdgelIndex::edgelThread()
     for (int i = shift; i < len; i += _threadNum)
     {
         auto image = (*_datasetImages)[i];
-        cout << i << ' ' << image.sketchPath << endl;
-        Sketch sketch(image.sketchPath.c_str());
+        cout << i << ' ' << image.path << endl;
+        Sketch sketch(image.path.c_str());
         auto hitmap = generateHitMap(sketch);
         for (int x = 0; x < 200; ++x)
         {
@@ -204,10 +208,11 @@ void EdgelIndex::edgelThread()
             }
         }
     }
+    --_shift;
     ReleaseMutex(_shiftMutex);
 }
 
-vector<Score> EdgelIndex::query(map<int, DatasetImageInfo> &images, const Sketch &querySketch)
+vector<Score> EdgelIndex::query(map<int, ImageInfo> &images, const Sketch &querySketch)
 {
     map<int, double> scores;
     auto hitmap = generateHitMap(querySketch);
@@ -243,7 +248,7 @@ vector<Score> EdgelIndex::query(map<int, DatasetImageInfo> &images, const Sketch
     for (int i = (int)result.size() - 1; i >= 0; --i)
     {
         double score = 0.0;
-        Sketch sketch(images[result[i].id].sketchPath.c_str());
+        Sketch sketch(images[result[i].id].path.c_str());
         hitmap = generateHitMap(sketch);
         for (int x = 0; x < 200; ++x)
         {
