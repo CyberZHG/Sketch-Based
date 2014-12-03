@@ -1,4 +1,4 @@
-function Results = test_phog_g(Datasets, Queries, LayerNum, Bin)
+function Results = test_phog(Datasets, Queries, LayerNum, Bin)
     % Glboal feature test.
     % Datasets: N x 1 cells containing location of dataset images.
     % Queries: M x 1 cells containing location of query images.
