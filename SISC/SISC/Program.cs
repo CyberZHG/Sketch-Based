@@ -6,7 +6,7 @@ namespace SISC
     {
         static void Main(string[] args)
         {
-            Worker worker = new Worker("PI100.task", 4);
+            Worker worker = new Worker("PI100.task", 8);
             worker.work();
         }
     }
