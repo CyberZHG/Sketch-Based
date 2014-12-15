@@ -60,10 +60,6 @@ namespace SRD
                     scores.Add(score);
                 }
                 scores.Sort();
-                if (!Directory.Exists("results"))
-                {
-                    Directory.CreateDirectory("results");
-                }
                 StreamWriter writer = new StreamWriter("results/" + task.queryNames[k] + ".result");
                 for (int i = 0; i < scores.Count; ++i)
                 {
@@ -97,6 +93,10 @@ namespace SRD
             Console.WriteLine();
 
             Console.WriteLine("Querying...");
+            if (!Directory.Exists("results"))
+            {
+                Directory.CreateDirectory("results");
+            }
             progress = 0;
             for (int i = 1; i < threadNum; ++i)
             {
