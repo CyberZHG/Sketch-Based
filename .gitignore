@@ -1,0 +1,13 @@
+# Image files
+*.jpg
+*.bmp
+*.png
+
+# Compiled files
+bin
+obj
+*.o
+*.exe
+
+# IDE files
+*.suo
