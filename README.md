@@ -15,7 +15,7 @@ Sketch-Based Image Retrieval
 * Angular Partitioning (AP)
 * Tensor Descriptor (TENSOR)
 
-## Accelerate
+## Acceleration
 
 * Edgel Index (EI)
 
