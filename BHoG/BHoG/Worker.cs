@@ -114,6 +114,18 @@ namespace BHoG
                 Thread.Sleep(100);
             }
             Console.WriteLine();
+            StreamWriter writer = new StreamWriter("results/result");
+            for (int i = 0; i < task.queryNames.Count; ++i)
+            {
+                StreamReader reader = new StreamReader("results/" + task.queryNames[i] + ".result");
+                writer.Write(task.queryNames[i]);
+                for (int j = 0; j < 100; ++j)
+                {
+                    writer.Write(" " + reader.ReadLine());
+                }
+                writer.Write("\n");
+            }
+            writer.Close();
         }
     }
 }
