@@ -24,7 +24,7 @@ def write_to_file(writer, files_path):
 imgs_path = []
 with open('groundtruth') as reader:
     for line in reader.readlines():
-        imgs_path.append('resize_img/' + line.strip().split(' ')[-1])
+        imgs_path.append('resize_edge/' + line.strip().split(' ')[-1])
 
 with open('Flickr15k.task', 'w') as writer:
     write_to_file(writer, imgs_path)
