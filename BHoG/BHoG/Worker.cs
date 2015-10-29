@@ -92,7 +92,7 @@ namespace BHoG
             extractThread();
             while (shifts != 0)
             {
-                Thread.Sleep(100);
+                Thread.Sleep(500);
             }
             Console.WriteLine();
 
@@ -111,19 +111,27 @@ namespace BHoG
             queryThread();
             while (shifts != 0)
             {
-                Thread.Sleep(100);
+                Thread.Sleep(500);
             }
             Console.WriteLine();
+
             StreamWriter writer = new StreamWriter("results/result");
+            int maxNum = 100;
+            if (task.queryNames.Count < maxNum)
+            {
+                maxNum = task.queryNames.Count;
+            }
             for (int i = 0; i < task.queryNames.Count; ++i)
             {
                 StreamReader reader = new StreamReader("results/" + task.queryNames[i] + ".result");
                 writer.Write(task.queryNames[i]);
-                for (int j = 0; j < 100; ++j)
+                for (int j = 0; j < maxNum; ++j)
                 {
                     writer.Write(" " + reader.ReadLine());
                 }
+                reader.Close();
                 writer.Write("\n");
+                writer.Flush();
             }
             writer.Close();
         }

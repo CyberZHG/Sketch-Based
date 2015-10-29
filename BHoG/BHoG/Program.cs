@@ -10,7 +10,7 @@ namespace BHoG
     {
         static void Main(string[] args)
         {
-            Worker worker = new Worker("test.task", 6);
+            Worker worker = new Worker("Flickr15k.task", Environment.ProcessorCount);
             worker.work();
         }
     }

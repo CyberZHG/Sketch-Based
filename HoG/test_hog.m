@@ -1,6 +1,6 @@
 function Results = test_hog(Datasets, Queries, Num, Bin)
-    % Datasets: N x 1 cells containing location of dataset images.
-    % Queries: M x 1 cells containing location of query images.
+    % Datasets: N x 1 cells containing the locations of dataset images.
+    % Queries: M x 1 cells containing the locations of query images.
     % Results: N x M matrix, each column contains the ranking of the
     % dataset images.
     if nargin < 3
