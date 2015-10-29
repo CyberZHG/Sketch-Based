@@ -61,7 +61,7 @@ total_recall = [0.0 for _ in range(100)]
 def save_precision_and_recall(path, precision, recall):
     with open(path, 'w') as writer:
         for i in range(len(precision)):
-            writer.write(' '.join(map(str, [i + 1, precision[i], recall[i]])) + '\n')
+            writer.write(' '.join(map(str, [i + 1, 100.0 * precision[i], 100.0 * recall[i]])) + '\n')
 
 for cat, cat_result in results.items():
     cat_num = cat_nums[cat]

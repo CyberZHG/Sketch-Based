@@ -3,6 +3,10 @@ function Feature = extract_grid_hog(Image, Num, Bin)
     if nargin == 2
         Bin = 9;
     end
+    if size(Image, 3) > 1
+        Image = rgb2gray(Image);
+    end
+    Image = im2double(Image);
     Height = size(Image, 1);
     Width = size(Image, 2);
     RowLength = Height / Num;

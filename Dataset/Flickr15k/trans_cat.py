@@ -24,12 +24,13 @@ with open('src_category', 'w') as writer:
         for line in reader.readlines():
             words = line.strip().split(' ')
             cat = words[0]
-            if cat not in cat_nums.keys():
-                cat_nums[cat] = 0
-            cat_nums[cat] += 1
             path = words[1].split('.')[0]
-            id = src_imgs[path]
-            writer.write(id + ' ' + cat + '\n')
+            if path in src_imgs.keys():
+                if cat not in cat_nums.keys():
+                    cat_nums[cat] = 0
+                cat_nums[cat] += 1
+                id = src_imgs[path]
+                writer.write(id + ' ' + cat + '\n')
 
 with open('num_category', 'w') as writer:
     for cat, num in cat_nums.items():
