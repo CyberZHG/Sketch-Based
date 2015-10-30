@@ -33,9 +33,10 @@ with open('Flickr15k.result') as reader:
         id = nums[0]
         cat = test_cats[id]
         ids = nums[1:]
-        folder_path = 'result/top10/' + str(cat) + '/' + str(id) + '/'
+        folder_path = 'result/top10/' + str(cat) + '/'
         if not os.path.exists(folder_path):
             os.makedirs(folder_path)
-        shutil.copyfile(test_path[id], folder_path + '_.jpg')
-        for i in range(10):
-            shutil.copyfile(img_path[ids[i]], folder_path + str(i) + '.png')
+        shutil.copyfile(test_path[id], folder_path + str(id) + '_0.jpg')
+        for i in range(1, 11):
+            src_path = 'resize_img/' + ('/'.join(img_path[ids[i]].split('/')[1:]))
+            shutil.copyfile(src_path, folder_path + str(id) + '_' + str(i) + '.png')
