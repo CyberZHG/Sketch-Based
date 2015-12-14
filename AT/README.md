@@ -17,12 +17,12 @@ Example:
 
 ## Demo
 
-The function `adapative_thinning` takes a logical or gray-scale image as input, and the sketch is represented by black pixels. The implementation could not be used for real-time applications because the thinning algorithm is slow. One can substitute the thinning algorithm with other implementations.
+The function `adaptive_thinning` takes a logical or gray-scale image as input, and the sketch is represented by black pixels. The implementation could not be used for real-time applications because the thinning algorithm is slow. One can substitute the thinning algorithm with other implementations.
 
 ```matlab
 I = imread('test.jpg');
 I = rgb2gray(I);
-Ith_best = adapative_thinning(I > 230);
+Ith_best = adaptive_thinning(I > 230);
 imwrite(Ith_best, 'result.jpg', 'PNG');
 ```
 
