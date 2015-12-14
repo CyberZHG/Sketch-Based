@@ -33,6 +33,10 @@ Sketch-Based Methods
 
 ![Tensor](https://cloud.githubusercontent.com/assets/853842/11771378/50bf71be-a24a-11e5-935f-85f6ef5c69da.png)
 
+## [Shape Context (SC)](./SC)
+
+![SC](https://cloud.githubusercontent.com/assets/853842/11774491/bc75a344-a270-11e5-9211-bbff77c82eae.png)
+
 ## [Edgel Index (EI)](./EI)
 
 ![EI](https://cloud.githubusercontent.com/assets/853842/11771385/6e981ce0-a24a-11e5-9f43-a2547bc11861.png)
