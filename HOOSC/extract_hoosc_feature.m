@@ -36,7 +36,7 @@ for i = 1 : N
                 for k = 1 : BinNum
                     Center = 2 * pi / BinNum * k;
                     Feature(Index + k, i) = Feature(Index + k, i) + ...
-                        exp(angle_dist(Angles(rj, cj), Center) ^ 2 / (2 * 10 ^ 2));
+                        exp(-angle_dist(Angles(rj, cj), Center) ^ 2 / (2 * 10 ^ 2));
                 end
             end
         end

@@ -37,6 +37,10 @@ Sketch-Based Methods
 
 ![SC](https://cloud.githubusercontent.com/assets/853842/11774491/bc75a344-a270-11e5-9211-bbff77c82eae.png)
 
+## [Histogram of Orientation Shape Context (HOOSC)](./HOOSC)
+
+## [Fixed Scale and Dense Sampling SIFT (FD-SIFT)](./FD-SIFT)
+
 ## [Edgel Index (EI)](./EI)
 
 ![EI](https://cloud.githubusercontent.com/assets/853842/11771385/6e981ce0-a24a-11e5-9f43-a2547bc11861.png)
